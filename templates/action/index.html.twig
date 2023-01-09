@@ -3,41 +3,49 @@
 {% block title %}Action index{% endblock %}
 
 {% block body %}
-    <h1>Action index</h1>
+    <div class="d-flex justify-content-between align-items-center m-3">
+        <h1>Liste des actions</h1>
+        <a href="{{ path('app_action_new') }}">
+            <button type="button" class="btn btn-primary">Nouvelle action</button>
+        </a>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Libelle</th>
-                <th>Description</th>
-                <th>Date</th>
-                <th>Location</th>
-                <th>Max_user</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for action in actions %}
-            <tr>
-                <td>{{ action.id }}</td>
-                <td>{{ action.libelle }}</td>
-                <td>{{ action.description }}</td>
-                <td>{{ action.date ? action.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ action.location }}</td>
-                <td>{{ action.maxUser }}</td>
-                <td>
-                    <a href="{{ path('app_action_show', {'id': action.id}) }}">show</a>
-                    <a href="{{ path('app_action_edit', {'id': action.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container text-center">
+        <div class="row row-cols-4 mx-3">
+            {% for action in actions %}
+                <div class="px-2">
+                    <div class="card col">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ action.libelle }}</h5>
+                            <p class="card-text" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ action.description }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">{{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</li>
+                            <li class="list-group-item">{{ action.location }}</li>
+                            <li class="list-group-item">{{ action.maxUser }}</li>
+                        </ul>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <a href="{{ path('app_action_show', {'id': action.id}) }}">
+                                        <button type="button" class="btn btn-outline-info">Voir</button>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{{ path('app_action_edit', {'id': action.id}) }}">
+                                        <button type="button" class="btn btn-secondary">Editer</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <a href="{{ path('app_action_new') }}">Create new</a>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
