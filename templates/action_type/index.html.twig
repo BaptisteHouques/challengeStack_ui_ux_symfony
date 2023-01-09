@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActionType index{% endblock %}
+
+{% block body %}
+    <h1>ActionType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for action_type in action_types %}
+            <tr>
+                <td>{{ action_type.id }}</td>
+                <td>{{ action_type.libelle }}</td>
+                <td>{{ action_type.description }}</td>
+                <td>
+                    <a href="{{ path('app_action_type_show', {'id': action_type.id}) }}">show</a>
+                    <a href="{{ path('app_action_type_edit', {'id': action_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_action_type_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ActionType{% endblock %}
+
+{% block body %}
+    <h1>ActionType</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ action_type.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ action_type.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ action_type.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_action_type_index') }}">back to list</a>
+
+    <a href="{{ path('app_action_type_edit', {'id': action_type.id}) }}">edit</a>
+
+    {{ include('action_type/_delete_form.html.twig') }}
+{% endblock %}
