@@ -25,6 +25,9 @@ class UserAction
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $status = null;
 
+    #[ORM\Column]
+    private ?bool $is_responsible = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +65,18 @@ class UserAction
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function isIsResponsible(): ?bool
+    {
+        return $this->is_responsible;
+    }
+
+    public function setIsResponsible(bool $is_responsible): self
+    {
+        $this->is_responsible = $is_responsible;
 
         return $this;
     }
