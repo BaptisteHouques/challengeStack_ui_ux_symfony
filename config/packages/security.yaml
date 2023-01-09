@@ -1,12 +1,12 @@
 security:
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ 'ROLE_MANAGER' ]
-        ROLE_MANAGER: [ 'ROLE_ADMIN_BENEVOLE', 'ROLE_ADMIN_' ]
+        ROLE_MANAGER: [ 'ROLE_ADMIN_BENEVOLE', 'ROLE_BENEVOLE' ]
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_MANAGER }
+        - { path: ^/suadmin, roles: ROLE_SUPER_ADMIN }
 
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
