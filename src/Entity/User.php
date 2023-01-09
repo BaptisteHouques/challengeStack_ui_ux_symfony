@@ -39,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column]
-    private ?bool $is_verified = null;
+    private ?bool $is_verified = false;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAction::class)]
     private Collection $userActions;

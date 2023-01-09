@@ -26,6 +26,9 @@ class Ressource
     #[ORM\JoinColumn(nullable: false)]
     private ?Action $action = null;
 
+    #[ORM\Column]
+    private ?bool $is_valid = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Ressource
     public function setAction(?Action $action): self
     {
         $this->action = $action;
+
+        return $this;
+    }
+
+    public function isIsValid(): ?bool
+    {
+        return $this->is_valid;
+    }
+
+    public function setIsValid(bool $is_valid): self
+    {
+        $this->is_valid = $is_valid;
 
         return $this;
     }
