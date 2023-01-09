@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/action/type')]
+#[Route('/action-type')]
 class ActionTypeController extends AbstractController
 {
     #[Route('/', name: 'app_action_type_index', methods: ['GET'])]
@@ -48,6 +48,17 @@ class ActionTypeController extends AbstractController
         ]);
     }
 
+
+    #[Route('/{id}', name: 'app_action_type_delete', methods: ['POST'])]
+    public function delete(Request $request, ActionType $actionType, ActionTypeRepository $actionTypeRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$actionType->getId(), $request->request->get('_token'))) {
+            $actionTypeRepository->remove($actionType, true);
+        }
+
+        return $this->redirectToRoute('app_action_type_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/edit', name: 'app_action_type_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ActionType $actionType, ActionTypeRepository $actionTypeRepository): Response
     {
@@ -64,15 +75,5 @@ class ActionTypeController extends AbstractController
             'action_type' => $actionType,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/{id}', name: 'app_action_type_delete', methods: ['POST'])]
-    public function delete(Request $request, ActionType $actionType, ActionTypeRepository $actionTypeRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$actionType->getId(), $request->request->get('_token'))) {
-            $actionTypeRepository->remove($actionType, true);
-        }
-
-        return $this->redirectToRoute('app_action_type_index', [], Response::HTTP_SEE_OTHER);
     }
 }
