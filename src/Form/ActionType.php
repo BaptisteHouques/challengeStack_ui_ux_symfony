@@ -17,6 +17,7 @@ class ActionType extends AbstractType
             ->add('date')
             ->add('location')
             ->add('max_user')
+            ->add('type')
         ;
     }
 
