@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}A propos{% endblock %}
+
+{% block body %}
+    <h1 class="m-3 text-center">A propos de l'association</h1>
+
+    <div class="container my-5 px-5">
+        <p class="px-5">
+            L'Association Sportive de Grenoble est une association à but non lucratif qui offre aux habitants de Grenoble et des environs une variété d’activités sportives.
+            <br />
+            Notre mission est de promouvoir un mode de vie sain et actif, en encourageant les personnes à adopter une alimentation saine et à participer à des activités physiques régulières. Nous offrons un large éventail d'activités sportives pour tous les âges et niveaux, allant des cours dirigés aux camps sportifs, des compétitions à des activités pour enfants.
+            <br />
+            Nous organisons également des séances d’information et des événements pour promouvoir le sport et la santé. Nous sommes déterminés à offrir des opportunités sportives de qualité à tous ceux qui cherchent à s’engager dans une activité physique.
+        </p>
+    </div>
+    <hr>
+    <div class="container my-5 d-flex justify-content-between align-items-center">
+        <div style="width: 48%">
+            <img src="{{ asset('images/about2.jpg') }}" alt="Sport" style="width: 100%">
+        </div>
+        <div style="width: 48%">
+            <p>
+                Le sport est bon pour la santé car il améliore la condition physique, le bien-être et les performances. Il aide à réduire le stress, à améliorer le sommeil et à maintenir un poids santé. Il contribue également à la prévention des maladies chroniques telles que le diabète et les maladies cardiaques. Le sport est également un excellent moyen de se divertir et de se défouler. Il peut aider à développer la confiance en soi, à améliorer l'humeur et à renforcer la santé mentale. En outre, le sport peut contribuer à la santé osseuse, à l'amélioration de l'endurance et à la flexibilité.
+            </p>
+        </div>
+    </div>
+    <div class="mx-5" style="border: 1px solid white"></div>
+    <div class="container my-5 d-flex justify-content-between align-items-center">
+        <div style="width: 48%">
+            <p>
+                Le sport est très bénéfique pour les enfants. C'est une façon saine et équilibrée de rester en forme et en bonne santé. Les enfants qui s'adonnent à des activités sportives régulières ont un meilleur développement physique et améliorent leur force et leur endurance. En outre, le sport aide les enfants à développer leur créativité et à améliorer leurs compétences sociales. Les enfants apprennent également la discipline, le travail d'équipe et la persévérance, ce qui leur sera très utile pour leur avenir.
+            </p>
+        </div>
+        <div style="width: 48%">
+            <img src="{{ asset('images/about1.jpg') }}" alt="Sport" style="width: 100%">
+        </div>
+    </div>
+{% endblock %}
