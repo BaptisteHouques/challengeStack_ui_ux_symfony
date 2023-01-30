@@ -8,23 +8,15 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class ProfilInfosType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('roles')
-            ->add('password')
             ->add('firstname')
             ->add('lastname')
-            ->add('is_verified')
+            ->add('email')
         ;
-        $builder->get('roles')
-            ->addModelTransformer(new CallbackTransformer(
-                fn ($rolesAsArray) => count($rolesAsArray) ? $rolesAsArray[0]: null,
-                fn ($rolesAsString) => [$rolesAsString]
-            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

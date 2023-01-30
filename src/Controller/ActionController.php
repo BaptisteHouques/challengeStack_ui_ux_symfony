@@ -29,6 +29,9 @@ class ActionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+//            if ($form->getData()->type === null) {
+//
+//            }
             $actionRepository->save($action, true);
 
             return $this->redirectToRoute('app_action_index', [], Response::HTTP_SEE_OTHER);
