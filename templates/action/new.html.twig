@@ -4,11 +4,6 @@
 
 {% block body %}
     <h1 class="m-3 mb-2">Créer un évenement</h1>
-    <div class="mx-3">
-        <a href="{{ path('app_action_index') }}">
-            <button type="button" class="btn btn-secondary">Liste des évenements</button>
-        </a>
-    </div>
 
-    {{ include('action/_form.html.twig') }}
+    {{ include('action/_form.html.twig', {'from_page': 'new'}) }}
 {% endblock %}

@@ -39,17 +39,10 @@
                             <li class="list-group-item">{{ action.maxUser }}</li>
                         </ul>
                         <div class="card-body">
-                            <div class="d-flex justify-content-around">
-                                <div>
-                                    <a href="{{ path('app_action_show', {'id': action.id}) }}">
-                                        <button type="button" class="btn btn-outline-info">Voir</button>
-                                    </a>
-                                </div>
-                                <div>
-                                    <a href="{{ path('app_action_edit', {'id': action.id}) }}">
-                                        <button type="button" class="btn btn-secondary">Editer</button>
-                                    </a>
-                                </div>
+                            <div>
+                                <a href="{{ path('app_action_show', {'id': action.id}) }}">
+                                    <button type="button" class="btn btn-outline-info">Voir</button>
+                                </a>
                             </div>
                         </div>
                     </div>
