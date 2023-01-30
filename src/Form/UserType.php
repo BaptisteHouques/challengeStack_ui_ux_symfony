@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,11 @@ class UserType extends AbstractType
             ->add('lastname')
             ->add('is_verified')
         ;
+        $builder->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                fn ($rolesAsArray) => count($rolesAsArray) ? $rolesAsArray[0]: null,
+                fn ($rolesAsString) => [$rolesAsString]
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
