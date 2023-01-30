@@ -3,15 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 use App\Form\ProfilInfosType;
+use App\Form\RegistrationFormType;
 use App\Form\UserType;
 use App\Repository\ActionRepository;
 use App\Repository\UserActionRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -61,4 +67,37 @@ class ProfilController extends AbstractController
             'actions' => $actions,
         ]);
     }
+
+    #[Route('/password', name: 'app_profil_password')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->user;
+        $form = $this->createForm(ChangePasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $oldPassword = $form->get('oldPassword')->getData();
+
+            if ($userPasswordHasher->isPasswordValid($user, $oldPassword)) {
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_profil_password');
+            } else {
+                $form->addError(new FormError('Ancien mot de passe incorrect'));
+            }
+        }
+
+        return $this->render('profil/password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }
