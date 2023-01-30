@@ -12,20 +12,6 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start align-items-center">
-        <div>
-            <a href="{{ path('app_action_show', {'id': action.id}) }}" class="mx-3">
-                <button type="button" class="btn btn-secondary">Voir l'évenement</button>
-            </a>
-        </div>
-
-        <div>
-            <a href="{{ path('app_action_index') }}">
-                <button type="button" class="btn btn-secondary">Liste des évenements</button>
-            </a>
-        </div>
-    </div>
-
-    {{ include('action/_form_profil.html.twig', {'from_page': 'edit'}) }}
+    {{ include('action/_form.html.twig', {'from_page': 'edit'}) }}
 
 {% endblock %}
