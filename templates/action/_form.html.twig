@@ -32,6 +32,19 @@
     {{ form_row(form.max_user) }}
 
     <div class="d-flex justify-content-end">
+        {% if from_page == 'edit' %}
+            <div>
+                <a href="{{ path('app_action_show', {'id': action.id}) }}" class="mx-2">
+                    <button type="button" class="btn btn-secondary">Annuler</button>
+                </a>
+            </div>
+        {% else %}
+            <div>
+                <a href="{{ path('app_action_index') }}" class="mx-2">
+                    <button type="button" class="btn btn-secondary">Annuler</button>
+                </a>
+            </div>
+        {% endif %}
         <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
     </div>
     {{ form_end(form) }}
