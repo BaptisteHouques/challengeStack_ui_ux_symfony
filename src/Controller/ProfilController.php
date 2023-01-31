@@ -99,5 +99,4 @@ class ProfilController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }
