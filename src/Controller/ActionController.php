@@ -50,7 +50,7 @@ class ActionController extends AbstractController
     #[Route('/{id}', name: 'app_action_show', methods: ['GET'])]
     public function show(Action $action, Security $security, UserActionRepository $userActionRepository): Response
     {
-        $userAction = $userActionRepository->findBy(['user' => $security->getUser(), 'action' => $action]);
+        $userAction = $userActionRepository->findOneBy(['user' => $security->getUser(), 'action' => $action]);
         $userAction ? $userParticipe = 1 : $userParticipe = 0;
         return $this->render('action/show.html.twig', [
             'action' => $action,
