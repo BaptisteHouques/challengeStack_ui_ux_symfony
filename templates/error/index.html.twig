@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur{% endblock %}
+
+{% block body %}
+    <div>
+        {# {{ dump(app.request.attributes.get('exception')) }} #}
+        {% if app.request.attributes.get('exception').statusCode is defined %}
+            {% if app.request.attributes.get('exception').statusCode == '404' %}
+                <h1>ERREUR HTTP 404</h1>
+                <h4>La page que vous recherchez n'existe pas</h4>
+            {% elseif app.request.attributes.get('exception').statusCode == '403' %}
+                <h1>ERREUR HTTP 403</h1>
+                <h4>Vous n'êtes pas autorisé à afficher ce contenu</h4>
+            {% elseif app.request.attributes.get('exception').statusCode == '500' %}
+                <h1>ERREUR HTTP 500</h1>
+                <h4>Erreur interne. Merci de prévenir l'administrateur du site.</h4>
+            {% else %}
+                <h1>Erreur HTTP {{ app.request.attributes.get('exception').statusCode }}</h1>
+                <h4>Merci de prévenir l'administrateur du site.</h4>
+            {% endif %}
+        {% elseif app.request.attributes.get('exception').code is defined %}
+            <h1>Erreur non HTTP {{ app.request.attributes.get('exception').code }}</h1>
+            <h4>Merci de prévenir l'administrateur du site.</h4>
+        {% endif %}
+        <h4>Message de l'erreur : {{  app.request.attributes.get('exception').message }}</h4>
+    </div>
+{% endblock %}
