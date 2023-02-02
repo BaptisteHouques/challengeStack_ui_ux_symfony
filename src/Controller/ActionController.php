@@ -7,10 +7,13 @@ use App\Form\ActionType;
 use App\Repository\ActionRepository;
 use App\Repository\UserActionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/action')]
 class ActionController extends AbstractController
@@ -24,7 +27,7 @@ class ActionController extends AbstractController
     }
 
     #[Route('/new', name: 'app_action_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ActionRepository $actionRepository): Response
+    public function new(Request $request, ActionRepository $actionRepository, SluggerInterface $slugger): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACTION_ADMIN');
 
@@ -33,9 +36,32 @@ class ActionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            if ($form->getData()->type === null) {
-//
-//            }
+
+            /** @var UploadedFile $imageFichier */
+            $imageFichier = $form->get('image')->getData();
+
+            // this condition is needed because the 'logo' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($imageFichier) {
+                $originalFilename = pathinfo($imageFichier->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFichier->guessExtension();
+
+                // Move the file to the directory where logos are stored
+                try {
+                    $imageFichier->move(
+                        $this->getParameter('imageAction_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'logoFilename' property to store the PDF file name
+                // instead of its contents
+                $action->setImage($newFilename);
+            }
             $actionRepository->save($action, true);
 
             return $this->redirectToRoute('app_action_show', ['id' => $action->getId()], Response::HTTP_SEE_OTHER);
@@ -59,7 +85,7 @@ class ActionController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_action_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Action $action, ActionRepository $actionRepository): Response
+    public function edit(Request $request, Action $action, ActionRepository $actionRepository, SluggerInterface $slugger): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ACTION_ADMIN');
 
@@ -67,6 +93,33 @@ class ActionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var UploadedFile $imageFichier */
+            $imageFichier = $form->get('image')->getData();
+
+            // this condition is needed because the 'logo' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($imageFichier) {
+                $originalFilename = pathinfo($imageFichier->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFichier->guessExtension();
+
+                // Move the file to the directory where logos are stored
+                try {
+                    $imageFichier->move(
+                        $this->getParameter('imageAction_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'logoFilename' property to store the PDF file name
+                // instead of its contents
+                $action->setImage($newFilename);
+            }
+
             $actionRepository->save($action, true);
 
             return $this->redirectToRoute('app_action_show', ['id' => $action->getId()], Response::HTTP_SEE_OTHER);
