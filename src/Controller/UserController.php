@@ -19,10 +19,15 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-        $users = $userRepository->findAll();
-//        if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
-//            unset($users->{$key})
-//        }
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            $users = $userRepository->findAll();
+        } else {
+            $users = $userRepository->createQueryBuilder('u')
+                ->Select('u.id, u.firstname, u.lastname, u.email, u.is_verified')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
         return $this->render('user/index.html.twig', [
             'users' => $users,
         ]);
@@ -51,6 +56,10 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
+        if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
+            $user->setRoles([]);
+            $user->setPassword('');
+        }
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -64,8 +73,10 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($user->isIsVerified()) {
+            if ($user->isIsVerified() && $user->getRoles() === ['ROLE_USER']) {
                 $user->setRoles(["ROLE_BENEVOLE"]);
+            } elseif (!$user->isIsVerified()) {
+                $user->setRoles(['ROLE_USER']);
             }
 
             $userRepository->save($user, true);
