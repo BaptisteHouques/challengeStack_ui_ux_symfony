@@ -65,7 +65,8 @@
                 <p class="mb-0"><span class="fw-bold">Lieu:</span> {{ action.location }}</p>
                 <p class="mb-0"><span class="fw-bold">Catégorie:</span> {{ action.type }}</p>
                 <p class="mb-0"><span class="fw-bold">Responsable:</span> {{ action.responsible }}</p>
-                <p><span class="fw-bold">Date:</span> {{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</p>
+                <p class="mb-0"><span class="fw-bold">Date:</span> {{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</p>
+                <p class="mb-0"><span class="fw-bold">Nombre d'inscrit:</span> {{ action.nbInscrit }} / {{ action.maxUser }}</p>
             </div>
         </div>
     </div>
