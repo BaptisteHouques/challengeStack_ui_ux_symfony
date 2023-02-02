@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle ressource{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une ressource à l'évènement</h1>
+
+    {{ include('ressource/_form.html.twig') }}
+
+    <a href="{{ path('app_action_show', {'id': ressource.action.id}) }}">Retour</a>
+{% endblock %}
