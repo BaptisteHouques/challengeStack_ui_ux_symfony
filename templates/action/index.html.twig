@@ -15,13 +15,46 @@
     <div class="m-3">
         <div class="mb-2">
             <button id="filter_button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="d-flex align-items-center" style="background-color: white; border: none;">
-                <img src="{{ asset('images/arrow_right.png') }}" id="filter_arrow" alt="Arrow right" style="width: 20px;">
+                <img src="{{ asset('images/arrow_down.png') }}" id="filter_arrow" alt="Arrow" style="width: 20px;">
                 <h4 class="mb-0 mx-1">Filtrer</h4>
             </button>
         </div>
-        <div class="collapse" id="collapseExample">
+        <div class="collapse show" id="collapseExample">
             <div class="card card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                <div class="d-flex justify-content-start align-items-center">
+                    <div class="mx-3">
+                        Sport
+                        <select name="sport" id="sport">
+                            <option value="rugby">Rugby</option>
+                            <option value="football">Football</option>
+                            <option value="hockey">Hockey sur glace</option>
+                        </select>
+                    </div>
+
+                    <div class="mx-3">
+                        Lieu
+                        <input type="text" />
+                    </div>
+
+                    <div class="mx-3">
+                        Type
+                        <select name="type" id="type">
+                            <option value="arbitre">Arbitrage</option>
+                            <option value="joueur">Joueur</option>
+                            <option value="organisation">Organisation</option>
+                        </select>
+                    </div>
+
+                    <div class="mx-3">
+                        Entre
+                        <input type="date" />
+                        et
+                        <input type="date">
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button class="btn btn-primary">Rechercher</button>
+                </div>
             </div>
         </div>
     </div>
