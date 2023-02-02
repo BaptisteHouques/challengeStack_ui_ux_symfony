@@ -26,6 +26,8 @@ class ActionController extends AbstractController
         foreach ($actions as $action) {
             $userAction = $userActionRepository->findOneBy(['action' => $action, 'user' => $security->getUser()]);
             $action->status = $userAction ? $userAction->getStatus() : 3;
+            $nbInscrit = count($userActionRepository->findBy(['action' => $action, 'status' => 1]));
+            $action->nbInscrit = $nbInscrit;
         }
 
         return $this->render('action/index.html.twig', [

@@ -69,6 +69,8 @@ class ProfilController extends AbstractController
         $actionsEnAttentes = [];
         foreach ($userActions as $userAction) {
             $action = $actionRepository->find($userAction->getAction());
+            $nbInscrit = count($userActionRepository->findBy(['action' => $action, 'status' => 1]));
+            $action->nbInscrit = $nbInscrit;
             if ($userAction->getStatus() === 1) {
                 $actions[] = $action;
             } else {
