@@ -58,13 +58,26 @@ class ProfilController extends AbstractController
     public function showAction(UserActionRepository $userActionRepository, ActionRepository $actionRepository): Response
     {
         $user = $this->user;
-        $userActions = $userActionRepository->findBy(['user' => $user]);
+        $userActions = $userActionRepository->createQueryBuilder('u')
+            ->where('u.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('u.status != 0')
+            ->getQuery()
+            ->getResult();
+
         $actions = [];
+        $actionsEnAttentes = [];
         foreach ($userActions as $userAction) {
-            $actions[] = $actionRepository->find($userAction->getAction());
+            $action = $actionRepository->find($userAction->getAction());
+            if ($userAction->getStatus() === 1) {
+                $actions[] = $action;
+            } else {
+                $actionsEnAttentes[] = $action;
+            }
         }
         return $this->render('profil/action.html.twig', [
             'actions' => $actions,
+            'actionsEnAttentes' => $actionsEnAttentes
         ]);
     }
 

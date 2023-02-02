@@ -5,9 +5,21 @@
             <p class="card-text" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ action.description }}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</li>
-            <li class="list-group-item">{{ action.location }}</li>
-            <li class="list-group-item">{{ action.maxUser }}</li>
+            <li class="list-group-item">Le {{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</li>
+            <li class="list-group-item">Localisation: {{ action.location }}</li>
+            <li class="list-group-item">Nombre d'inscrit: {{ action.maxUser }}</li>
+            {% if action.status is defined and action.status is not same as 3 %}
+            <li class="list-group-item">
+                Statut:
+                {% if action.status is same as 2 %}
+                    En attente
+                {% elseif action.status is same as 1 %}
+                    Validé
+                {% else %}
+                    Refusé
+                {% endif %}
+            </li>
+            {% endif %}
         </ul>
         <div class="card-body">
             <div>

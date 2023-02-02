@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Action;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -27,6 +30,14 @@ class ActionType extends AbstractType
             ->add('location', TextType::class,  ['label' => 'Localisation'])
             ->add('max_user', NumberType::class,  ['label' => 'Nombre de bénévole requis'])
             ->add('type')
+            ->add('responsible', EntityType::class, [
+                'class' => User::class,
+                'query_builder' => function (UserRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.is_verified = 1')
+                        ->orderBy('u.firstname', 'ASC');
+                },
+                'label' => 'Responsable'
             ->add('image', FileType::class, [
                 'label' => 'Image de Couverture',
                 'mapped' => false,

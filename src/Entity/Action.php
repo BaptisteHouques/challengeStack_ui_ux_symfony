@@ -41,6 +41,10 @@ class Action
     #[ORM\JoinColumn(nullable: false)]
     private ?ActionType $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'actions_responsible')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $responsible = null;
+    
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
@@ -186,6 +190,15 @@ class Action
 
         return $this;
     }
+
+    public function getResponsible(): ?User
+    {
+        return $this->responsible;
+    }
+
+    public function setResponsible(?User $responsible): self
+    {
+        $this->responsible = $responsible;
 
     public function __toString(): string
     {
