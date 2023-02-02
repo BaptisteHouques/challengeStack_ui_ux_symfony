@@ -67,19 +67,28 @@ class ProfilController extends AbstractController
 
         $actions = [];
         $actionsEnAttentes = [];
+        $actionsPasses = [];
         foreach ($userActions as $userAction) {
             $action = $actionRepository->find($userAction->getAction());
             $nbInscrit = count($userActionRepository->findBy(['action' => $action, 'status' => 1]));
             $action->nbInscrit = $nbInscrit;
             if ($userAction->getStatus() === 1) {
-                $actions[] = $action;
+//                dump(date('Y-m-d h:m:s'));
+//                dump($action->getDate()->format('Y-m-d h:m:s'));
+//                die;
+                if ($action->getDate()->format('Y-m-d h:m:s') < date('Y-m-d h:m:s')) {
+                    $actionsPasses[] = $action;
+                } else {
+                    $actions[] = $action;
+                }
             } else {
                 $actionsEnAttentes[] = $action;
             }
         }
         return $this->render('profil/action.html.twig', [
             'actions' => $actions,
-            'actionsEnAttentes' => $actionsEnAttentes
+            'actionsEnAttentes' => $actionsEnAttentes,
+            'actionsPasses' => $actionsPasses
         ]);
     }
 

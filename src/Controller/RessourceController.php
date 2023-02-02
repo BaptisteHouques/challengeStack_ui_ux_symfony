@@ -121,4 +121,13 @@ class RessourceController extends AbstractController
 
         return $this->redirectToRoute('app_action_show', ['id' => $ressource->getAction()->getId()], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/accept/{id}/{idAction}', name: 'app_ressource_validate', methods: ['GET','POST'])]
+    public function accept(Ressource $ressource, int $idAction, RessourceRepository $ressourceRepository): Response
+    {
+        $ressource->setIsValid(1);
+        $ressourceRepository->save($ressource, true);
+
+        return $this->redirectToRoute('app_action_ressources', ['id' => $idAction]);
+    }
 }

@@ -26,8 +26,6 @@ class ActionController extends AbstractController
         foreach ($actions as $action) {
             $userAction = $userActionRepository->findOneBy(['action' => $action, 'user' => $security->getUser()]);
             $action->status = $userAction ? $userAction->getStatus() : 3;
-            $nbInscrit = count($userActionRepository->findBy(['action' => $action, 'status' => 1]));
-            $action->nbInscrit = $nbInscrit;
         }
 
         return $this->render('action/index.html.twig', [
@@ -96,6 +94,8 @@ class ActionController extends AbstractController
         }
 
         $is_responsible = $action->getResponsible() === $connectedUser ? 1 : 0;
+        $nbInscrit = count($userActionRepository->findBy(['action' => $action, 'status' => 1]));
+        $action->nbInscrit = $nbInscrit;
 
         return $this->render('action/show.html.twig', [
             'action' => $action,
@@ -104,20 +104,35 @@ class ActionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/gerer', name: 'app_action_gerer', methods: ['GET'])]
-    public function gerer(Action $action, Security $security, UserActionRepository $userActionRepository): Response
+    #[Route('/{id}/participants', name: 'app_action_participants', methods: ['GET'])]
+    public function gererParticipants(Action $action, Security $security, UserActionRepository $userActionRepository): Response
     {
-        if ($action->getResponsible() !== $security->getUser()) {
+        if ($action->getResponsible() !== $security->getUser() and !$this->isGranted(['ROLE_ACTION_ADMIN'])) {
             $this->redirectToRoute('app_action_show', ['id' => $action->getId()]);
         }
 
         $participants = $userActionRepository->findBy(['action' => $action], ['status' => 'DESC']);
 
-        return $this->render('action/gerer.html.twig', [
+        return $this->render('action/gererParticipants.html.twig', [
             'action' => $action,
             'participants' => $participants
         ]);
     }
+
+    #[Route('/{id}/ressources', name: 'app_action_ressources', methods: ['GET'])]
+    public function gererRessources(Action $action, Security $security, UserActionRepository $userActionRepository): Response
+    {
+        if ($action->getResponsible() !== $security->getUser() and !$this->isGranted(['ROLE_ACTION_ADMIN'])) {
+            $this->redirectToRoute('app_action_show', ['id' => $action->getId()]);
+        }
+
+        return $this->render('action/gererRessources.html.twig', [
+            'action' => $action,
+            'ressources' => $action->getRessources()
+        ]);
+    }
+
+
 
     #[Route('/{id}/edit', name: 'app_action_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Action $action, ActionRepository $actionRepository, SluggerInterface $slugger): Response
