@@ -38,7 +38,7 @@ class ActionController extends AbstractController
 //            }
             $actionRepository->save($action, true);
 
-            return $this->redirectToRoute('app_action_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_action_show', ['id' => $action->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('action/new.html.twig', [
@@ -69,7 +69,7 @@ class ActionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $actionRepository->save($action, true);
 
-            return $this->redirectToRoute('app_action_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_action_show', ['id' => $action->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('action/edit.html.twig', [
