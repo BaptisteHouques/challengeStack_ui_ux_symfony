@@ -38,6 +38,7 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
         $user = new User();
+        $user->isCurrentUserManager = $this->isGranted('ROLE_SUPER_ADMIN');
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
