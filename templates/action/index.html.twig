@@ -5,9 +5,11 @@
 {% block body %}
     <div class="d-flex justify-content-start align-items-center m-3">
         <h1>Liste des évenements</h1>
+        {% if is_granted('ROLE_ACTION_ADMIN') %}
         <a href="{{ path('app_action_new') }}" class="mx-3">
             <button type="button" class="btn btn-primary">Créer un évenement</button>
         </a>
+        {% endif %}
     </div>
 
     <div class="m-3">
