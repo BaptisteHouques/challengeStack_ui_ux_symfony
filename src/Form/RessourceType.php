@@ -18,16 +18,18 @@ class RessourceType extends AbstractType
         $builder
             ->add('nom')
             ->add('lien', FileType::class, [
-                'label' => 'Lien',
+                'label' => 'Fichier',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
-//                        'mimeTypes' => [
-//                            'image/jpg',
-//                            'image/png'
-//                        ],
+                        'maxSize' => '2000k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'application/pdf',
+                            'application/mp4'
+                        ],
                         'mimeTypesMessage' => 'Sélectionner une ressource valide',
                     ])
                 ],

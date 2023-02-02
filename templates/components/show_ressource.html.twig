@@ -1,0 +1,22 @@
+<div class="px-2 mb-3" >
+    <div class="card col">
+        {% if (ressource.lien|split('.')|last) is same as 'pdf' %}
+            <img class="card-img-top" src="{{ asset( 'images/pdf-placeholder.png') }}" alt="Card image cap" style="height: 180px">
+        {% else %}
+            <img class="card-img-top" src="{{ asset( 'uploads/ressources/' ~ ressource.lien) }}" alt="Card image cap" style="height: 180px">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ ressource.nom }}</h5>
+            <div class="d-flex justify-content-around align-items-center">
+                <div style="width: 40%">
+                    <a href="{{ asset( 'uploads/ressources/' ~ ressource.lien) }}">
+                        <button type="button" class="btn btn-outline-info" style="width: 100%">Voir</button>
+                    </a>
+                </div>
+                {% if is_granted('ROLE_ACTION_ADMIN') %}
+                    {{ include('ressource/_removeFromEvent_form.html.twig') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

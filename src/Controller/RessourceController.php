@@ -25,25 +25,6 @@ class RessourceController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_ressource_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, RessourceRepository $ressourceRepository): Response
-    {
-        $ressource = new Ressource();
-        $form = $this->createForm(RessourceType::class, $ressource);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ressourceRepository->save($ressource, true);
-
-            return $this->redirectToRoute('app_ressource_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('ressource/new.html.twig', [
-            'ressource' => $ressource,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_ressource_show', methods: ['GET'])]
     public function show(Ressource $ressource): Response
     {
@@ -74,6 +55,7 @@ class RessourceController extends AbstractController
     public function delete(Request $request, Ressource $ressource, RessourceRepository $ressourceRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ressource->getId(), $request->request->get('_token'))) {
+            unlink($this->getParameter('ressources_directory') . '/' .$ressource->getLien());
             $ressourceRepository->remove($ressource, true);
         }
 
@@ -85,6 +67,7 @@ class RessourceController extends AbstractController
     {
         $ressource = new Ressource();
         $ressource->isAddition = true;
+        $ressource->setAction($action);
         $form = $this->createForm(RessourceType::class, $ressource);
         $form->handleRequest($request);
 
@@ -93,7 +76,7 @@ class RessourceController extends AbstractController
             /** @var UploadedFile $lienFichier */
             $lienFichier = $form->get('lien')->getData();
 
-            // this condition is needed because the 'logo' field is not required
+            // this condition is needed because the 'ressource' field is not required
             // so the PDF file must be processed only when a file is uploaded
             if ($lienFichier) {
                 $originalFilename = pathinfo($lienFichier->getClientOriginalName(), PATHINFO_FILENAME);
@@ -101,7 +84,7 @@ class RessourceController extends AbstractController
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$lienFichier->guessExtension();
 
-                // Move the file to the directory where logos are stored
+                // Move the file to the directory where ressources are stored
                 try {
                     $lienFichier->move(
                         $this->getParameter('ressources_directory'),
@@ -117,15 +100,25 @@ class RessourceController extends AbstractController
             }
 
             $ressource->setUser($this->getUser());
-            $ressource->setAction($action);
             $ressourceRepository->save($ressource, true);
 
-            return $this->redirectToRoute('app_ressource_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_action_show', ['id' => $action->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ressource/new.html.twig', [
+        return $this->renderForm('ressource/add.html.twig', [
             'ressource' => $ressource,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/removeFromEvent/{id}', name: 'app_ressource_remove', methods: ['POST'])]
+    public function remove(Request $request, Ressource $ressource, RessourceRepository $ressourceRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$ressource->getId(), $request->request->get('_token'))) {
+            unlink($this->getParameter('ressources_directory') . '/' .$ressource->getLien());
+            $ressourceRepository->remove($ressource, true);
+        }
+
+        return $this->redirectToRoute('app_action_show', ['id' => $ressource->getAction()->getId()], Response::HTTP_SEE_OTHER);
     }
 }

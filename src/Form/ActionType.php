@@ -46,10 +46,10 @@ class ActionType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
-//                        'mimeTypes' => [
-//                            'image/jpg',
-//                            'image/png'
-//                        ],
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png'
+                        ],
                         'mimeTypesMessage' => 'Sélectionner une image valide',
                     ])
                 ],
