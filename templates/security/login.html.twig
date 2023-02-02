@@ -15,6 +15,7 @@
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
             <label for="inputPassword" class="mt-3">Password</label>
             <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            <a href="{{ path('app_forgot_password_request') }}">Réinitialiser le mot de passe</a>
 
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}"

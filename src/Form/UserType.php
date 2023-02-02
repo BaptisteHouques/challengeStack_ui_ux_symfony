@@ -22,7 +22,7 @@ class UserType extends AbstractType
             ->add('password')
             ->add('firstname', TextType::class, ['label' => 'Prénom'])
             ->add('lastname', TextType::class, ['label' => 'Nom'])
-            ->add('is_verified', CheckboxType::class, ['label' => 'Est vérifié ?'])
+            ->add('is_verified', CheckboxType::class, ['label' => 'Est vérifié ?', 'required' => false])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

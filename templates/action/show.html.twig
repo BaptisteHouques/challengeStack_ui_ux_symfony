@@ -13,13 +13,15 @@
                 {% if is_granted('ROLE_BENEVOLE') %}
                     <div class="ms-2">
                     {% if userParticipe is same as 2 %}
+                        <a href="{{ path('app_userAction_remove', {'id': action.id}) }}" class="mx-1"><button type="button" class="btn btn-danger">Se retirer</button></a>
                         Participation: En attente
                     {% elseif userParticipe is same as 1 %}
+                        <a href="{{ path('app_userAction_remove', {'id': action.id}) }}" class="mx-1"><button type="button" class="btn btn-danger">Se retirer</button></a>
                         Participation: Accepté
                     {% elseif userParticipe is same as 0 %}
                         Participation: Refusé
                     {% else %}
-
+                        <a href="{{ path('app_userAction_add', {'id': action.id}) }}" class="mx-1"><button type="button" class="btn btn-primary">Participer</button></a>
                     {% endif %}
                 {% endif %}
                     </div>
@@ -38,19 +40,8 @@
             {% endif %}
 
             {% if isResponsible or is_granted('ROLE_ACTION_ADMIN') %}
-                <a href="{{ path('app_action_participants', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Gérer les participants</button></a>
-                <a href="{{ path('app_action_ressources', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Gérer les ressources</button></a>
-            {% endif %}
-            {% if is_granted('ROLE_BENEVOLE') %}
-                {% if userParticipe is same as 2 %}
-                    <a href="{{ path('app_userAction_remove', {'id': action.id}) }}"><button type="button" class="btn btn-danger">Se retirer</button></a>
-                {% elseif userParticipe is same as 1 %}
-                    <a href="{{ path('app_userAction_remove', {'id': action.id}) }}"><button type="button" class="btn btn-danger">Se retirer</button></a>
-                {% elseif userParticipe is same as 0 %}
-
-                {% else %}
-                    <a href="{{ path('app_userAction_add', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Participer</button></a>
-                {% endif %}
+                <a href="{{ path('app_action_participants', {'id': action.id}) }}" class="mx-1"><button type="button" class="btn btn-primary">Gérer les participants</button></a>
+                <a href="{{ path('app_action_ressources', {'id': action.id}) }}" class="mx-1"><button type="button" class="btn btn-primary">Gérer les ressources</button></a>
             {% endif %}
         </div>
     </div>
@@ -80,7 +71,7 @@
         </div>
     </div>
 
-    {% if userParticipe or is_granted('ROLE_ACTION_ADMIN') %}
+    {% if userParticipe is same as 1 or is_granted('ROLE_ACTION_ADMIN') %}
         <div class="justify-content-start align-items-center m-3 ms-5">
             <h2>Ressources</h2>
             <a href="{{ path('app_ressource_add', {'id': action.id}) }}" class="mx-3">

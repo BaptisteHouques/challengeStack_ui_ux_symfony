@@ -8,13 +8,32 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link" href="/action">Evenements</a>
-                <a class="nav-link" href="/about-us">A propos</a>
+                <a class="nav-link" href="/action">
+                    {% if '/action/' in app.request.pathinfo %}
+                        <u>Evenements</u>
+                    {% else %}
+                        Evenements
+                    {% endif %}
+                </a>
+                <a class="nav-link" href="/about-us">
+                    {% if '/about-us' in app.request.pathinfo %}
+                        <u>A propos</u>
+                    {% else %}
+                        A propos
+                    {% endif %}
+                </a>
                 {% if is_granted('ROLE_MANAGER') %}
-                    <a class="nav-link" href="/admin/user">Utilisateurs</a>
+                    <a class="nav-link" href="/admin/user">
+                        {% if '/admin/user/' in app.request.pathinfo %}
+                            <u>Utilisateurs</u>
+                        {% else %}
+                            Utilisateurs
+                        {% endif %}
+                    </a>
                 {% endif %}
             </div>
         </div>
+
         {% if is_granted('ROLE_BENEVOLE') %}
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
