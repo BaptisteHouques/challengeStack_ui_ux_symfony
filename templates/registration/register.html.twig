@@ -4,28 +4,35 @@
 {% block title %}Enregistrement{% endblock %}
 
 {% block body %}
-    <div class="card" style="width: 30%; margin: 100px auto 0">
-        <div class="card-body">
-            <h1 class="m-3 text-center">Inscription</h1>
+    <div style=" margin: 100px auto 0; width: 30%">
+        <div class="text-center my-3">
+            <a href="{{ path('app_about') }}">
+                <button class="btn btn-outline-primary">Pourquoi devenir bénévole ?</button>
+            </a>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h1 class="m-3 text-center">Inscription</h1>
 
-            {{ form_start(registrationForm) }}
-            {{ form_row(registrationForm.firstname) }}
-            {{ form_row(registrationForm.lastname) }}
-            {{ form_row(registrationForm.email) }}
+                {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.firstname) }}
+                {{ form_row(registrationForm.lastname) }}
+                {{ form_row(registrationForm.email) }}
                 {{ form_row(registrationForm.plainPassword, {
                     label: 'Password'
                 }) }}
 
-            <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-primary" type="submit">
-                    S'inscrire
-                </button>
-            </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn btn-primary" type="submit">
+                        S'inscrire
+                    </button>
+                </div>
 
-            <div class="text-center mt-3">
-                <a href="{{ path('app_login') }}">Se connecter</a>
+                <div class="text-center mt-3">
+                    <a href="{{ path('app_login') }}">Se connecter</a>
+                </div>
+                {{ form_end(registrationForm) }}
             </div>
-            {{ form_end(registrationForm) }}
         </div>
     </div>
 {% endblock %}
