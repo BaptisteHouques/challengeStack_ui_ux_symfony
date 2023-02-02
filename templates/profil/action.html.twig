@@ -5,25 +5,37 @@
 {% block body %}
     <h1 class="m-3">Mes évenements</h1>
 
-    <h2 class="mt-3 mx-4">Evenements validé</h2>
+    {% if actions %}
+    <h2 class="mt-3 mx-4">Evenements validés</h2>
     <div class="container text-center">
         <div class="row row-cols-lg-4 row-cols-sm-2 mx-3">
             {% for action in actions %}
                 {% include './components/show_action.html.twig' with {'action': action} %}
-            {% else %}
-                <p class="text-center">Aucun événement validé</p>
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 
+    {% if actionsEnAttentes %}
     <h2 class="mt-3 mx-4">Evenements en attente</h2>
     <div class="container text-center">
         <div class="row row-cols-lg-4 row-cols-sm-2 mx-3">
             {% for action in actionsEnAttentes %}
                 {% include './components/show_action.html.twig' with {'action': action} %}
-            {% else %}
-                <p class="text-center">Aucun événement en attente</p>
             {% endfor %}
         </div>
     </div>
+    {% endif %}
+
+    {% if actionsPasses %}
+        <h2 class="mt-3 mx-4">Evenements passés</h2>
+        <div class="container text-center">
+            <div class="row row-cols-lg-4 row-cols-sm-2 mx-3">
+                {% for action in actionsPasses %}
+                    {% include './components/show_action.html.twig' with {'action': action} %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}
