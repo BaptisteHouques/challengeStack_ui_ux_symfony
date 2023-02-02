@@ -20,7 +20,7 @@ class RessourceType extends AbstractType
             ->add('lien', FileType::class, [
                 'label' => 'Fichier',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '2000k',

@@ -54,7 +54,7 @@ class UserActionController extends AbstractController
         $userAction->setStatus(1);
         $userActionRepository->save($userAction, true);
 
-        return $this->redirectToRoute('app_action_gerer', ['id' => $action->getId()]);
+        return $this->redirectToRoute('app_action_participants', ['id' => $action->getId()]);
     }
 
     #[Route('/refuse/{id}/{idUser}', name: 'app_userAction_refuse', methods: ['GET','POST'])]
@@ -65,6 +65,6 @@ class UserActionController extends AbstractController
         $userAction->setStatus(0);
         $userActionRepository->save($userAction, true);
 
-        return $this->redirectToRoute('app_action_gerer', ['id' => $action->getId()]);
+        return $this->redirectToRoute('app_action_participants', ['id' => $action->getId()]);
     }
 }

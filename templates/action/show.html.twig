@@ -9,8 +9,9 @@
                 <a href="{{ path('app_action_index') }}"><img src="{{ asset('images/arrow_back.png') }}" alt="Back"></a>
             </div>
             <div>
-                <h1 class="mb-0">{{ action.libelle }}</h1>
+                <h1 class="mb-3 ms-2">{{ action.libelle }}</h1>
                 {% if is_granted('ROLE_BENEVOLE') %}
+                    <div class="ms-2">
                     {% if userParticipe is same as 2 %}
                         Participation: En attente
                         <a href="{{ path('app_userAction_remove', {'id': action.id}) }}"><button type="button" class="btn btn-danger">Se retirer</button></a>
@@ -23,10 +24,12 @@
                         <a href="{{ path('app_userAction_add', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Participer</button></a>
                     {% endif %}
 
-                    {% if isResponsible %}
-                        <a href="{{ path('app_action_gerer', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Gérer les participants</button></a>
+                    {% if isResponsible or is_granted('ROLE_ACTION_ADMIN') %}
+                        <a href="{{ path('app_action_participants', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Gérer les participants</button></a>
+                        <a href="{{ path('app_action_ressources', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Gérer les ressources</button></a>
                     {% endif %}
                 {% endif %}
+                    </div>
             </div>
         </div>
 
@@ -43,7 +46,7 @@
         {% endif %}
     </div>
 
-    <div class="container d-flex justify-content-between align-items-start mb-5">
+    <div class="container d-flex justify-content-between align-items-start mb-5 mt-5">
         <div style="width: 48%">
             {% if action.image %}
                 <img src="{{ asset( 'uploads/imageAction/' ~ action.image) }}" alt="Default" style="width: 100%" class="rounded">
@@ -68,7 +71,7 @@
     </div>
 
     {% if userParticipe or is_granted('ROLE_ACTION_ADMIN') %}
-        <div class="justify-content-start align-items-center m-3">
+        <div class="justify-content-start align-items-center m-3 ms-5">
             <h2>Ressources</h2>
             <a href="{{ path('app_ressource_add', {'id': action.id}) }}" class="mx-3">
                 <button type="button" class="btn btn-primary">Proposer</button>

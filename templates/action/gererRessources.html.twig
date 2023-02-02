@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerer les ressources{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-start align-items-center m-3">
+        <div>
+            <a href="{{ path('app_action_show', {'id': action.id}) }}"><img src="{{ asset('images/arrow_back.png') }}" alt="Back"></a>
+        </div>
+        <div>
+            <h1 class="mb-0">Gérer les ressources: {{ action.libelle }}</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-bordered table-hover" style="text-align: center">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 33%">Nom</th>
+                    <th scope="col" style="width: 33%">Voir</th>
+                    <th scope="col" style="width: 34%">Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ressource in ressources %}
+                    <tr>
+                        <td>{{ ressource.nom }}</td>
+                        <td class="d-flex justify-content-center">
+                            <div style="width: 40%">
+                                <a href="{{ asset( 'uploads/ressources/' ~ ressource.lien) }}">
+                                    <button class="btn btn-outline-info" style="width: 100%">Fichier {{ ressource.lien|split('.')|last }}</button>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            {% if not ressource.isValid %}
+                                <div class="d-flex justify-content-around">
+                                    <div style="width: 40%">
+                                        <a href="{{ path('app_ressource_validate', {id: ressource.id, idAction: action.id}) }}">
+                                            <button class="btn btn-outline-primary" style="width: 100%">Valider</button>
+                                        </a>
+                                    </div>
+                                    {{ include('ressource/_removeFromEvent_form.html.twig') }}
+                                </div>
+                            {% else %}
+                                Validé
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
