@@ -23,9 +23,11 @@ class UserAction
     private ?Action $action = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?int $status = null;
 
     #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
     private ?bool $is_responsible = null;
 
     public function getId(): ?int

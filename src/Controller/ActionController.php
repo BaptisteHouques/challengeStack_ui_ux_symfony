@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Action;
 use App\Form\ActionType;
 use App\Repository\ActionRepository;
+use App\Repository\UserActionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/action')]
 class ActionController extends AbstractController
@@ -24,6 +26,8 @@ class ActionController extends AbstractController
     #[Route('/new', name: 'app_action_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ActionRepository $actionRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ACTION_ADMIN');
+
         $action = new Action();
         $form = $this->createForm(ActionType::class, $action);
         $form->handleRequest($request);
@@ -44,16 +48,21 @@ class ActionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_action_show', methods: ['GET'])]
-    public function show(Action $action): Response
+    public function show(Action $action, Security $security, UserActionRepository $userActionRepository): Response
     {
+        $userAction = $userActionRepository->findOneBy(['user' => $security->getUser(), 'action' => $action]);
+        $userAction ? $userParticipe = 1 : $userParticipe = 0;
         return $this->render('action/show.html.twig', [
             'action' => $action,
+            'userParticipe' => $userParticipe
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_action_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Action $action, ActionRepository $actionRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ACTION_ADMIN');
+
         $form = $this->createForm(ActionType::class, $action);
         $form->handleRequest($request);
 
@@ -72,6 +81,8 @@ class ActionController extends AbstractController
     #[Route('/{id}', name: 'app_action_delete', methods: ['POST'])]
     public function delete(Request $request, Action $action, ActionRepository $actionRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ACTION_ADMIN');
+
         if ($this->isCsrfTokenValid('delete'.$action->getId(), $request->request->get('_token'))) {
             $actionRepository->remove($action, true);
         }
