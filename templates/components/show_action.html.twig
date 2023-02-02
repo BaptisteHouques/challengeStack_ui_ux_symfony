@@ -7,7 +7,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Le {{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</li>
             <li class="list-group-item">Localisation: {{ action.location }}</li>
-            <li class="list-group-item">Nombre d'inscrit: {{ action.maxUser }}</li>
+            <li class="list-group-item">Nombre d'inscrit: {{ action.nbInscrit }} / {{ action.maxUser }}</li>
             {% if action.status is defined and action.status is not same as 3 %}
             <li class="list-group-item">
                 Statut:

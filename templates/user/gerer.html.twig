@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerer les participants{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-start align-items-center m-3">
+        <div>
+            <a href="{{ path('app_user_index') }}"><img src="{{ asset('images/arrow_back.png') }}" alt="Back"></a>
+        </div>
+        <div>
+            <h1 class="mb-0">Vérifier les nouveaux comptes</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 50%">Compte</th>
+                <th scope="col" style="width: 50%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.firstname }} {{ user.lastname }} ({{ user.email }})</td>
+                    <td>
+                        <a href="{{ path('app_user_accept', {id: user.id}) }}">
+                            <button class="btn btn-primary mx-2">Accepter</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -53,6 +53,20 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/verif', name: 'app_user_verif', methods: ['GET'])]
+    public function verif(UserRepository $userRepository): Response
+    {
+        if (!$this->isGranted('ROLE_MANAGER')) {
+            $this->redirectToRoute('app_user_index');
+        }
+
+        $users = $userRepository->findBy(['is_verified' => 0]);
+
+        return $this->render('user/gerer.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -88,6 +102,16 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/accept', name: 'app_user_accept', methods: ['GET', 'POST'])]
+    public function accept(Request $request, User $user, UserRepository $userRepository): Response
+    {
+        $user->setIsVerified(1);
+        $user->setRoles(["ROLE_BENEVOLE"]);
+        $userRepository->save($user, true);
+
+        return $this->redirectToRoute('app_user_verif');
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
