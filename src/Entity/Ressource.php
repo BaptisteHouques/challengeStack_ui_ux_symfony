@@ -14,10 +14,10 @@ class Ressource
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $link = null;
+    private ?string $lien = null;
 
     #[ORM\ManyToOne(inversedBy: 'ressources')]
     private ?User $user = null;
@@ -34,26 +34,26 @@ class Ressource
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNom(): ?string
     {
-        return $this->name;
+        return $this->nom;
     }
 
-    public function setName(string $name): self
+    public function setNom(string $nom): self
     {
-        $this->name = $name;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getLink(): ?string
+    public function getLien(): ?string
     {
-        return $this->link;
+        return $this->lien;
     }
 
-    public function setLink(string $link): self
+    public function setLien(string $lien): self
     {
-        $this->link = $link;
+        $this->lien = $lien;
 
         return $this;
     }

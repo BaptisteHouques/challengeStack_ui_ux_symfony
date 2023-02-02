@@ -10,6 +10,9 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="/action">Evenements</a>
                 <a class="nav-link" href="/about-us">A propos</a>
+                {% if is_granted('ROLE_MANAGER') %}
+                    <a class="nav-link" href="/admin/user">Utilisateurs</a>
+                {% endif %}
             </div>
         </div>
         {% if is_granted('ROLE_BENEVOLE') %}
