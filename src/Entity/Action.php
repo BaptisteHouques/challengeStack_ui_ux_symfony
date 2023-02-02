@@ -200,6 +200,9 @@ class Action
     {
         $this->responsible = $responsible;
 
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->libelle . " " . $this->libelle;

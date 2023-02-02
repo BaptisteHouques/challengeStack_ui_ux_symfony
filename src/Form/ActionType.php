@@ -38,6 +38,7 @@ class ActionType extends AbstractType
                         ->orderBy('u.firstname', 'ASC');
                 },
                 'label' => 'Responsable'
+            ])
             ->add('image', FileType::class, [
                 'label' => 'Image de Couverture',
                 'mapped' => false,
