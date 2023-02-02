@@ -3,13 +3,8 @@
 {% block title %}Modifier l'évenement{% endblock %}
 
 {% block body %}
-    <div class="m-3 mb-0 d-flex justify-content-between align-items-start">
-        <div>
-            <h1>Modifier l'évenement</h1>
-        </div>
-        <div>
-            {{ include('action/_delete_form.html.twig') }}
-        </div>
+    <div class="m-3">
+        <h1>Modifier l'évenement: {{ action.libelle }}</h1>
     </div>
 
     {{ include('action/_form.html.twig', {'from_page': 'edit'}) }}

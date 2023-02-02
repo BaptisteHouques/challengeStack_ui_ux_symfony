@@ -1,0 +1,20 @@
+<div class="px-2 mb-3">
+    <div class="card col">
+        <div class="card-body">
+            <h5 class="card-title">{{ action.libelle }}</h5>
+            <p class="card-text" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ action.description }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</li>
+            <li class="list-group-item">{{ action.location }}</li>
+            <li class="list-group-item">{{ action.maxUser }}</li>
+        </ul>
+        <div class="card-body">
+            <div>
+                <a href="{{ path('app_action_show', {'id': action.id}) }}">
+                    <button type="button" class="btn btn-outline-info">Voir</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

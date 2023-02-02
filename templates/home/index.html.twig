@@ -1,14 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1 class="my-3 text-center">Le sport pour tous</h1>
 
-<div class="example-wrapper">
-    <h1>Hello!</h1>
-</div>
+    <div class="container mt-5 pt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3>Evènements à venir</h3>
+            </div>
+
+            <div>
+                <a href="{{ path('app_action_index') }}">Voir plus</a>
+            </div>
+        </div>
+
+        <div class="row row-cols-3">
+            {% for event in events %}
+                {% include './components/show_action.html.twig' with {'action': event} %}
+            {% else %}
+                <p>Aucun événement à venir</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container mt-5 pt-3">
+        <h3>Qui sommes nous ?</h3>
+        <div>
+            L'Association Sportive de Grenoble est une association à but non lucratif qui offre aux habitants de Grenoble et des environs une variété d’activités sportives.
+            Notre mission est de promouvoir un mode de vie sain et actif, en encourageant les personnes à adopter une alimentation saine et à participer à des activités physiques régulières...
+            <a href="{{ path('app_about') }}">Voir en détail</a>
+        </div>
+    </div>
+
 {% endblock %}
