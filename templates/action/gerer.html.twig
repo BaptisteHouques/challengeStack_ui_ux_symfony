@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerer les participants{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-start align-items-center m-3">
+        <div>
+            <a href="{{ path('app_action_show', {'id': action.id}) }}"><img src="{{ asset('images/arrow_back.png') }}" alt="Back"></a>
+        </div>
+        <div>
+            <h1 class="mb-0">Gérer les participants: {{ action.libelle }}</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 50%">Participants</th>
+                    <th scope="col" style="width: 50%">Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participant in participants %}
+                    <tr>
+                        <td>{{ participant.user.firstname }} {{ participant.user.lastname }}</td>
+                        <td>
+                            {% if participant.status is same as 2 %}
+                                En attente:
+                                <a href="{{ path('app_userAction_accept', {id: participant.action.id, idUser: participant.user.id}) }}">
+                                    <button class="btn btn-primary mx-2">Accepter</button>
+                                </a>
+                                <a href="{{ path('app_userAction_refuse', {id: participant.action.id, idUser: participant.user.id}) }}">
+                                    <button class="btn btn-danger">Refuser</button>
+                                </a>
+                            {% elseif participant.status is same as 1 %}
+                                Accepté
+                            {% else %}
+                                Refusé
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -41,6 +41,10 @@ class Action
     #[ORM\JoinColumn(nullable: false)]
     private ?ActionType $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'actions_responsible')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $responsible = null;
+
     public function __construct()
     {
         $this->userActions = new ArrayCollection();
@@ -180,6 +184,18 @@ class Action
     public function setType(?ActionType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getResponsible(): ?User
+    {
+        return $this->responsible;
+    }
+
+    public function setResponsible(?User $responsible): self
+    {
+        $this->responsible = $responsible;
 
         return $this;
     }

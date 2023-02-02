@@ -14,7 +14,7 @@ class UserAction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userActions')]
+#[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'userActions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -25,10 +25,6 @@ class UserAction
     #[ORM\Column(type: Types::SMALLINT)]
     #[ORM\JoinColumn(nullable: false)]
     private ?int $status = null;
-
-    #[ORM\Column]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?bool $is_responsible = null;
 
     public function getId(): ?int
     {
@@ -67,18 +63,6 @@ class UserAction
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function isIsResponsible(): ?bool
-    {
-        return $this->is_responsible;
-    }
-
-    public function setIsResponsible(bool $is_responsible): self
-    {
-        $this->is_responsible = $is_responsible;
 
         return $this;
     }

@@ -16,10 +16,17 @@ use Symfony\Component\Security\Core\Security;
 class ActionController extends AbstractController
 {
     #[Route('/', name: 'app_action_index', methods: ['GET'])]
-    public function index(ActionRepository $actionRepository): Response
+    public function index(ActionRepository $actionRepository, Security $security, UserActionRepository $userActionRepository): Response
     {
+        $actions = $actionRepository->findAll();
+
+        foreach ($actions as $action) {
+            $userAction = $userActionRepository->findOneBy(['action' => $action, 'user' => $security->getUser()]);
+            $action->status = $userAction ? $userAction->getStatus() : 3;
+        }
+
         return $this->render('action/index.html.twig', [
-            'actions' => $actionRepository->findAll(),
+            'actions' => $actions
         ]);
     }
 
@@ -50,11 +57,37 @@ class ActionController extends AbstractController
     #[Route('/{id}', name: 'app_action_show', methods: ['GET'])]
     public function show(Action $action, Security $security, UserActionRepository $userActionRepository): Response
     {
-        $userAction = $userActionRepository->findOneBy(['user' => $security->getUser(), 'action' => $action]);
-        $userAction ? $userParticipe = 1 : $userParticipe = 0;
+        $connectedUser = $security->getUser();
+
+        $userAction = $userActionRepository->findOneBy(['user' => $connectedUser, 'action' => $action]);
+
+        if ($userAction) {
+            $userParticipe = $userAction->getStatus();
+        } else {
+            $userParticipe = 3;
+        }
+
+        $is_responsible = $action->getResponsible() === $connectedUser ? 1 : 0;
+
         return $this->render('action/show.html.twig', [
             'action' => $action,
-            'userParticipe' => $userParticipe
+            'userParticipe' => $userParticipe,
+            'isResponsible' => $is_responsible,
+        ]);
+    }
+
+    #[Route('/{id}/gerer', name: 'app_action_gerer', methods: ['GET'])]
+    public function gerer(Action $action, Security $security, UserActionRepository $userActionRepository): Response
+    {
+        if ($action->getResponsible() !== $security->getUser()) {
+            $this->redirectToRoute('app_action_show', ['id' => $action->getId()]);
+        }
+
+        $participants = $userActionRepository->findBy(['action' => $action], ['status' => 'DESC']);
+
+        return $this->render('action/gerer.html.twig', [
+            'action' => $action,
+            'participants' => $participants
         ]);
     }
 

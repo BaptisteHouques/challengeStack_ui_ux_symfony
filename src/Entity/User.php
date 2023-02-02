@@ -47,10 +47,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ressource::class)]
     private Collection $ressources;
 
+    #[ORM\OneToMany(mappedBy: 'responsible', targetEntity: Action::class)]
+    private Collection $actions_responsible;
+
     public function __construct()
     {
         $this->userActions = new ArrayCollection();
         $this->ressources = new ArrayCollection();
+        $this->actions_responsible = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -236,5 +240,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Action>
+     */
+    public function getActionsResponsible(): Collection
+    {
+        return $this->actions_responsible;
+    }
+
+    public function addActionsResponsible(Action $actionsResponsible): self
+    {
+        if (!$this->actions_responsible->contains($actionsResponsible)) {
+            $this->actions_responsible->add($actionsResponsible);
+            $actionsResponsible->setResponsible($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActionsResponsible(Action $actionsResponsible): self
+    {
+        if ($this->actions_responsible->removeElement($actionsResponsible)) {
+            // set the owning side to null (unless already changed)
+            if ($actionsResponsible->getResponsible() === $this) {
+                $actionsResponsible->setResponsible(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstname . " " . $this->lastname;
     }
 }

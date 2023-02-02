@@ -29,8 +29,11 @@ class UserActionController extends AbstractController
         $userAction = new UserAction();
         $userAction->setAction($action);
         $userAction->setUser($security->getUser());
-        $userAction->setStatus(0);
-        $userAction->setIsResponsible(0);
+        if ($security->getUser() === $action->getResponsible()) {
+            $userAction->setStatus(1);
+        } else {
+            $userAction->setStatus(2);
+        }
         $userActionRepository->save($userAction, true);
         return $this->redirectToRoute('app_action_show', ['id' => $action->getId()]);
     }
@@ -41,5 +44,27 @@ class UserActionController extends AbstractController
         $userAction = $userActionRepository->findOneBy(['user' => $security->getUser(), 'action' => $action]);
         $userActionRepository->remove($userAction, true);
         return $this->redirectToRoute('app_action_show', ['id' => $action->getId()]);
+    }
+
+    #[Route('/accept/{id}/{idUser}', name: 'app_userAction_accept', methods: ['GET','POST'])]
+    public function accept(Action $action, UserActionRepository $userActionRepository, UserRepository $userRepository, int $idUser): Response
+    {
+        $user = $userRepository->find($idUser);
+        $userAction = $userActionRepository->findOneBy(['user' => $user, 'action' => $action]);
+        $userAction->setStatus(1);
+        $userActionRepository->save($userAction, true);
+
+        return $this->redirectToRoute('app_action_gerer', ['id' => $action->getId()]);
+    }
+
+    #[Route('/refuse/{id}/{idUser}', name: 'app_userAction_refuse', methods: ['GET','POST'])]
+    public function refuse(Action $action, UserActionRepository $userActionRepository, UserRepository $userRepository, int $idUser): Response
+    {
+        $user = $userRepository->find($idUser);
+        $userAction = $userActionRepository->findOneBy(['user' => $user, 'action' => $action]);
+        $userAction->setStatus(0);
+        $userActionRepository->save($userAction, true);
+
+        return $this->redirectToRoute('app_action_gerer', ['id' => $action->getId()]);
     }
 }

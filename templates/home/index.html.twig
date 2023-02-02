@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="row row-cols-3">
+        <div class="row row-cols-3 text-center">
             {% for event in events %}
                 {% include './components/show_action.html.twig' with {'action': event} %}
             {% else %}

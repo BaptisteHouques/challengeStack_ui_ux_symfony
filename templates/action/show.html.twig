@@ -11,10 +11,20 @@
             <div>
                 <h1 class="mb-0">{{ action.libelle }}</h1>
                 {% if is_granted('ROLE_BENEVOLE') %}
-                    {% if not userParticipe %}
-                        <a href="{{ path('app_userAction_add', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Participer</button></a>
-                    {% else %}
+                    {% if userParticipe is same as 2 %}
+                        Participation: En attente
                         <a href="{{ path('app_userAction_remove', {'id': action.id}) }}"><button type="button" class="btn btn-danger">Se retirer</button></a>
+                    {% elseif userParticipe is same as 1 %}
+                        Participation: Accepté
+                        <a href="{{ path('app_userAction_remove', {'id': action.id}) }}"><button type="button" class="btn btn-danger">Se retirer</button></a>
+                    {% elseif userParticipe is same as 0 %}
+                        Participation: Refusé
+                    {% else %}
+                        <a href="{{ path('app_userAction_add', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Participer</button></a>
+                    {% endif %}
+
+                    {% if isResponsible %}
+                        <a href="{{ path('app_action_gerer', {'id': action.id}) }}"><button type="button" class="btn btn-primary">Gérer les participants</button></a>
                     {% endif %}
                 {% endif %}
             </div>
@@ -47,6 +57,7 @@
             <div>
                 <p class="mb-0"><span class="fw-bold">Lieu:</span> {{ action.location }}</p>
                 <p class="mb-0"><span class="fw-bold">Catégorie:</span> {{ action.type }}</p>
+                <p class="mb-0"><span class="fw-bold">Responsable:</span> {{ action.responsible }}</p>
                 <p><span class="fw-bold">Date:</span> {{ action.date ? action.date|date('d-m-Y à H:i:s') : '' }}</p>
             </div>
         </div>
