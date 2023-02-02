@@ -1,15 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Modifier l'utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <h1 class="m-3">Modifier {{ user.firstname }} {{ user.lastname }}</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('user/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
-        {{ include('user/_delete_form.html.twig') }}
-    {% endif %}
+{#    {% if is_granted('ROLE_SUPER_ADMIN') %}#}
+{#        {{ include('user/_delete_form.html.twig') }}#}
+{#    {% endif %}#}
 {% endblock %}
